@@ -33,6 +33,7 @@ nv.models.lineChart = function() {
     , noData = 'No Data Available.'
     , dispatch = d3.dispatch('tooltipShow', 'tooltipHide', 'stateChange', 'changeState')
     , transitionDuration = 250
+    , legendPosition = 'top'
     ;
 
   xAxis
@@ -79,7 +80,6 @@ nv.models.lineChart = function() {
 
       //set state.disabled
       state.disabled = data.map(function(d) { return !!d.disabled });
-
 
       if (!defaultState) {
         var key;
@@ -152,14 +152,17 @@ nv.models.lineChart = function() {
             .datum(data)
             .call(legend);
 
-        if ( margin.top != legend.height()) {
-          margin.top = legend.height();
-          availableHeight = (height || parseInt(container.style('height')) || 400)
-                             - margin.top - margin.bottom;
+        if (legendPosition == 'top' || legendPosition == 'bottom') {
+          if ( margin[legendPosition] != legend.height()) {
+            margin[legendPosition] = legend.height();
+            availableHeight = (height || parseInt(container.style('height')) || 400)
+              - margin.top - margin.bottom;
+          }
         }
 
+
         wrap.select('.nv-legendWrap')
-            .attr('transform', 'translate(0,' + (-margin.top) +')')
+            .attr('transform', 'translate(0,' + (legendPosition == 'top' ? (-margin.top) : availableHeight) +')')
       }
 
       //------------------------------------------------------------
@@ -357,7 +360,7 @@ nv.models.lineChart = function() {
   chart.interactiveLayer = interactiveLayer;
 
   d3.rebind(chart, lines, 'defined', 'isArea', 'x', 'y', 'size', 'xScale', 'yScale', 'xDomain', 'yDomain', 'xRange', 'yRange'
-    , 'forceX', 'forceY', 'interactive', 'clipEdge', 'clipVoronoi', 'useVoronoi','id', 'interpolate');
+    , 'forceX', 'forceY', 'interactive', 'clipEdge', 'clipVoronoi', 'useVoronoi','id', 'interpolate', 'legendPosition');
 
   chart.options = nv.utils.optionsFunc.bind(chart);
 
@@ -394,6 +397,12 @@ nv.models.lineChart = function() {
     showLegend = _;
     return chart;
   };
+
+  chart.legendPosition = function(_) {
+    if (!arguments.length) return legendPosition;
+    legendPosition = _;
+    return chart;
+  }
 
   chart.showXAxis = function(_) {
     if (!arguments.length) return showXAxis;
