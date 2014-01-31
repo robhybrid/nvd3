@@ -154,7 +154,8 @@ nv.models.lineChart = function() {
 
         if (legendPosition == 'top' || legendPosition == 'bottom') {
           if ( margin[legendPosition] != legend.height()) {
-            margin[legendPosition] = legend.height();
+            console.log('legend.height()', legend.height());
+            margin[legendPosition] = legend.height() * 2;
             availableHeight = (height || parseInt(container.style('height')) || 400)
               - margin.top - margin.bottom;
           }
@@ -162,7 +163,7 @@ nv.models.lineChart = function() {
 
 
         wrap.select('.nv-legendWrap')
-            .attr('transform', 'translate(0,' + (legendPosition == 'top' ? (-margin.top) : availableHeight) +')')
+            .attr('transform', 'translate(0,' + (legendPosition == 'top' ? (-margin.top) : availableHeight+legend.height()) +')')
       }
 
       //------------------------------------------------------------
