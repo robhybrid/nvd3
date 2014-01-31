@@ -1,5 +1,5 @@
 {
-  "name": "nvd3",
+  "name": "nvd3-rw",
   "version": "0.0.1",
   "devDependencies": {
     "grunt": "~0.4.1",
