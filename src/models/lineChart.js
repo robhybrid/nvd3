@@ -149,21 +149,22 @@ nv.models.lineChart = function() {
         legend.width(availableWidth);
 
         g.select('.nv-legendWrap')
-            .datum(data)
-            .call(legend);
+          .datum(data)
+          .call(legend);
 
         if (legendPosition == 'top' || legendPosition == 'bottom') {
           if ( margin[legendPosition] != legend.height()) {
-            console.log('legend.height()', legend.height());
-            margin[legendPosition] = legend.height() * 2;
-            availableHeight = (height || parseInt(container.style('height')) || 400)
-              - margin.top - margin.bottom;
+            margin[legendPosition] = legend.height();
+            availableHeight = (height || parseInt(container.style('height')) || 400);
+            availableHeight -= (margin.top + margin.bottom);
           }
         }
-
+        if (legendPosition == 'bottom') {
+          availableHeight -= 40;
+        }
 
         wrap.select('.nv-legendWrap')
-            .attr('transform', 'translate(0,' + (legendPosition == 'top' ? (-margin.top) : availableHeight+legend.height()) +')')
+          .attr('transform', 'translate(0,' + (legendPosition == 'top' ? (-margin.top) : availableHeight + 40 ) +')')
       }
 
       //------------------------------------------------------------
